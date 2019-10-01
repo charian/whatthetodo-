@@ -1,7 +1,15 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import styled from 'styled-components';
 import firebase from 'react-native-firebase';
 import database from 'react-native-firebase';
+
+const Container = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  background-color: #f5fcff;
+`;
 
 export default class App extends React.Component {
   constructor(props) {
@@ -32,7 +40,7 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <Container>
         <Text style={styles.welcome}>What The Todo</Text>
         <Text style={styles.instructions}>To get started, edit App.js</Text>
 
@@ -81,18 +89,13 @@ export default class App extends React.Component {
             <Text style={styles.module}>storage()</Text>
           )}
         </View>
-      </View>
+      </Container>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
+  container: {},
   welcome: {
     fontSize: 30,
     textAlign: 'center',
