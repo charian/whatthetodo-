@@ -3,6 +3,16 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 target 'WhatTheTodo' do
   # Pods for WhatTheTodo
+
+# Required by RNFirebase
+pod 'Firebase/Core', '~> 6.3.0'
+pod 'Firebase/Messaging', '~> 6.3.0'
+pod 'Firebase/Database', '~> 6.3.0'
+pod 'Firebase/DynamicLinks', '~> 6.3.0'
+
+pod 'Fabric', '~> 1.10.2'
+pod 'Crashlytics', '~> 3.13.2'
+
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
