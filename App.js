@@ -1,75 +1,43 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import firebase from 'react-native-firebase';
-import BlurOverlay, {
-  closeOverlay,
-  openOverlay,
-} from 'react-native-blur-overlay';
+import database from 'react-native-firebase';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
-
-type Props = {};
-export default class App extends Component<Props> {
+export default class App extends React.Component {
   constructor(props) {
     super(props);
   }
 
   async componentDidMount() {
-    //TODO: You: Do firebase things
-    // const {user} = await firebase.auth().signInAnonymously();
-    // console.warn('User -> ', user.toJSON());
-    // await firebase.analytics().logEvent('foo', {bar: '123'});
+    //this.writeUserData('charian@naver.com', 'an', 'gihyeon');
   }
-
-  renderBlurChilds() {
-    return (
-      <View style={styles.image}>
-        <Text style={styles.instructions2}>{instructions}</Text>
-
-        <Text style={styles.instructions2}>{instructions}</Text>
-      </View>
-    );
+  writeUserData(email, fname, lname) {
+    firebase
+      .database()
+      .ref('Users/')
+      .set({
+        email,
+        fname,
+        lname,
+      })
+      .then(data => {
+        //success callback
+        console.log('data ', data);
+      })
+      .catch(error => {
+        //error callback
+        console.log('error ', error);
+      });
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <TouchableOpacity
-          onPress={() => {
-            openOverlay();
-          }}
-          style={{
-            width: '90%',
-            height: 36,
-            backgroundColor: '#03A9F4',
-            borderRadius: 4,
-            margin: 16,
-          }}
-        />
-
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
+        <Text style={styles.welcome}>What The Todo</Text>
         <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
-        {Platform.OS === 'ios' ? (
-          <Text style={styles.instructions}>
-            Press Cmd+R to reload,{'\n'}
-            Cmd+D or shake for dev menu
-          </Text>
-        ) : (
-          <Text style={styles.instructions}>
-            Double tap R on your keyboard to reload,{'\n'}
-            Cmd+M or shake for dev menu
-          </Text>
-        )}
+
         <View style={styles.modules}>
-          <Text style={styles.modulesHeader}>
-            The following Firebase modules are pre-installed:
-          </Text>
+          <Text style={styles.modulesHeader}>Installed Firebase Module:</Text>
           {firebase.admob.nativeModuleExists && (
             <Text style={styles.module}>admob()</Text>
           )}
@@ -113,17 +81,6 @@ export default class App extends Component<Props> {
             <Text style={styles.module}>storage()</Text>
           )}
         </View>
-        <BlurOverlay
-          radius={14}
-          downsampling={2}
-          brightness={-200}
-          onPress={() => {
-            closeOverlay();
-          }}
-          customStyles={{alignItems: 'center', justifyContent: 'center'}}
-          blurStyle="light"
-          children={this.renderBlurChilds()}
-        />
       </View>
     );
   }
@@ -137,7 +94,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   welcome: {
-    fontSize: 20,
+    fontSize: 30,
     textAlign: 'center',
     margin: 10,
   },
@@ -155,11 +112,6 @@ const styles = StyleSheet.create({
     height: 80,
     marginBottom: 16,
     width: 80,
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
   },
   instructions: {
     textAlign: 'center',

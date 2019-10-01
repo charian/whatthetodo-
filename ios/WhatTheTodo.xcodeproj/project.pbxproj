@@ -54,6 +54,7 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = WhatTheTodo/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = WhatTheTodo/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = WhatTheTodo/main.m; sourceTree = "<group>"; };
+		1997C8BA2342FB6F00D52EF5 /* WhatTheTodo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = WhatTheTodo.entitlements; path = WhatTheTodo/WhatTheTodo.entitlements; sourceTree = "<group>"; };
 		19D8037D233DEC3E005E9C16 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* WhatTheTodo-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WhatTheTodo-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* WhatTheTodo-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "WhatTheTodo-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -127,6 +128,7 @@
 		13B07FAE1A68108700A75B9A /* WhatTheTodo */ = {
 			isa = PBXGroup;
 			children = (
+				1997C8BA2342FB6F00D52EF5 /* WhatTheTodo.entitlements */,
 				19D8037D233DEC3E005E9C16 /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -638,6 +640,7 @@
 			baseConfigurationReference = 06DFAED76ADEC8CBA260A60D /* Pods-WhatTheTodo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = WhatTheTodo/WhatTheTodo.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 75863MHJ4R;
@@ -659,6 +662,7 @@
 			baseConfigurationReference = A99158797CB64AE35D039120 /* Pods-WhatTheTodo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = WhatTheTodo/WhatTheTodo.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 75863MHJ4R;
 				INFOPLIST_FILE = WhatTheTodo/Info.plist;
