@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, AsyncStorage} from 'react-native';
 import styled from 'styled-components';
 import firebase from 'react-native-firebase';
 import database from 'react-native-firebase';
@@ -14,6 +14,9 @@ const Container = styled.View`
 export default class App extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      notiPermission: false,
+    };
   }
 
   async componentDidMount() {
@@ -24,6 +27,47 @@ export default class App extends React.Component {
     this.notificationListener();
     this.notificationOpenedListener();
   }
+  //1
+  async checkPermission() {
+    const enabled = await firebase.messaging().hasPermission();
+    if (enabled) {
+      this.getToken();
+      this.setState({
+        notiPermission: 'true',
+      });
+      console.log('you have already permission');
+    } else {
+      this.requestPermission();
+      console.log('go to get permission');
+    }
+  }
+
+  //3
+  async getToken() {
+    let fcmToken = await AsyncStorage.getItem('fcmToken');
+    if (!fcmToken) {
+      fcmToken = await firebase.messaging().getToken();
+      if (fcmToken) {
+        // user has a device token
+        console.log('fcm token: ' + fcmToken);
+        await AsyncStorage.setItem('fcmToken', fcmToken);
+      }
+    }
+  }
+
+  //2
+  async requestPermission() {
+    try {
+      await firebase.messaging().requestPermission();
+      // User has authorised
+      this.getToken();
+      console.log('get permission');
+    } catch (error) {
+      // User has rejected permissions
+      console.log('permission rejected');
+    }
+  }
+
   async createNotificationListeners() {
     /*
      * Triggered when a particular notification has been received in foreground
@@ -31,6 +75,7 @@ export default class App extends React.Component {
     this.notificationListener = firebase
       .notifications()
       .onNotification(notification => {
+        console.log(notification);
         const {title, body} = notification;
         this.showAlert(title, body);
       });
@@ -60,7 +105,7 @@ export default class App extends React.Component {
      * */
     this.messageListener = firebase.messaging().onMessage(message => {
       //process data message
-      console.log(JSON.stringify(message));
+      console.log('from payload : ' + JSON.stringify(message));
     });
   }
   showAlert(title, body) {
@@ -96,7 +141,7 @@ export default class App extends React.Component {
       <Container>
         <Text style={styles.welcome}>What The Todo</Text>
         <Text style={styles.instructions}>To get started, edit App.js</Text>
-
+        <Text>Notification Permission : {this.state.notiPermission}</Text>
         <View style={styles.modules}>
           <Text style={styles.modulesHeader}>Installed Firebase Module:</Text>
           {firebase.admob.nativeModuleExists && (
