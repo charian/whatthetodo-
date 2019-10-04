@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useEffect} from 'react';
 import {StyleSheet, Text, View, AsyncStorage} from 'react-native';
 import styled from 'styled-components';
 import firebase from 'react-native-firebase';
@@ -21,11 +21,11 @@ export default class App extends React.Component {
 
   async componentDidMount() {
     this.checkPermission();
-    this.createNotificationListeners(); //add this line
+    this.messageListener(); //add this line
   }
   componentWillUnmount() {
-    this.notificationListener();
-    this.notificationOpenedListener();
+    // this.notificationListener();
+    // this.notificationOpenedListener();
   }
   //1
   async checkPermission() {
@@ -35,26 +35,36 @@ export default class App extends React.Component {
       this.setState({
         notiPermission: 'true',
       });
-      console.log('you have already permission');
+      alert('you have already permission');
     } else {
       this.requestPermission();
-      console.log('go to get permission');
+      alert('go to get permission');
     }
   }
 
   //3
-  async getToken() {
-    let fcmToken = await AsyncStorage.getItem('fcmToken');
-    if (!fcmToken) {
-      fcmToken = await firebase.messaging().getToken();
-      if (fcmToken) {
-        // user has a device token
-        console.log('fcm token: ' + fcmToken);
-        await AsyncStorage.setItem('fcmToken', fcmToken);
-      }
-    }
-  }
+  // async getToken() {
+  //   let fcmToken = await AsyncStorage.getItem('fcmToken');
+  //   if (!fcmToken) {
+  //     fcmToken = await firebase.messaging().getToken();
+  //     console('fcm token: ' + fcmToken);
+  //     if (fcmToken) {
+  //       // user has a device token
 
+  //       //await AsyncStorage.setItem('fcmToken', fcmToken);
+  //       console('fcm token: ' + fcmToken);
+  //     }
+  //   }
+  // }
+  getToken = async () => {
+    const fcmToken = await firebase.messaging().getToken();
+    if (fcmToken) {
+      console.log(fcmToken);
+      this.showAlert('Your Firebase Token is:', fcmToken);
+    } else {
+      this.showAlert('Failed', 'No token received');
+    }
+  };
   //2
   async requestPermission() {
     try {
@@ -68,21 +78,55 @@ export default class App extends React.Component {
     }
   }
 
-  async createNotificationListeners() {
-    /*
-     * Triggered when a particular notification has been received in foreground
-     * */
+  // async createNotificationListeners() {
+  //   /*
+  //    * Triggered when a particular notification has been received in foreground
+  //    * */
+  //   this.notificationListener = firebase
+  //     .notifications()
+  //     .onNotification(notification => {
+  //       console.log(notification);
+  //       const {title, body} = notification;
+  //       this.showAlert(title, body);
+  //     });
+
+  //   /*
+  //    * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
+  //    * */
+  //   this.notificationOpenedListener = firebase
+  //     .notifications()
+  //     .onNotificationOpened(notificationOpen => {
+  //       const {title, body} = notificationOpen.notification;
+  //       this.showAlert(title, body);
+  //     });
+
+  //   /*
+  //    * If your app is closed, you can check if it was opened by a notification being clicked / tapped / opened as follows:
+  //    * */
+  //   const notificationOpen = await firebase
+  //     .notifications()
+  //     .getInitialNotification();
+  //   if (notificationOpen) {
+  //     const {title, body} = notificationOpen.notification;
+  //     this.showAlert(title, body);
+  //   }
+  //   /*
+  //    * Triggered for data only payload in foreground
+  //    * */
+  //   this.messageListener = firebase.messaging().onMessage(message => {
+  //     //process data message
+  //     alert('from payload : ' + JSON.stringify(message));
+  //   });
+  // }
+
+  messageListener = async () => {
     this.notificationListener = firebase
       .notifications()
       .onNotification(notification => {
-        console.log(notification);
         const {title, body} = notification;
         this.showAlert(title, body);
       });
 
-    /*
-     * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
-     * */
     this.notificationOpenedListener = firebase
       .notifications()
       .onNotificationOpened(notificationOpen => {
@@ -90,9 +134,6 @@ export default class App extends React.Component {
         this.showAlert(title, body);
       });
 
-    /*
-     * If your app is closed, you can check if it was opened by a notification being clicked / tapped / opened as follows:
-     * */
     const notificationOpen = await firebase
       .notifications()
       .getInitialNotification();
@@ -100,19 +141,17 @@ export default class App extends React.Component {
       const {title, body} = notificationOpen.notification;
       this.showAlert(title, body);
     }
-    /*
-     * Triggered for data only payload in foreground
-     * */
+
     this.messageListener = firebase.messaging().onMessage(message => {
-      //process data message
-      console.log('from payload : ' + JSON.stringify(message));
+      alert(JSON.stringify(message));
     });
-  }
+  };
+
   showAlert(title, body) {
     Alert.alert(
       title,
       body,
-      [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+      [{text: 'OK', onPress: () => alert('OK Pressed')}],
       {cancelable: false},
     );
   }
