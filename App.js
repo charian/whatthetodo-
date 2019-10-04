@@ -99,7 +99,24 @@ const App = () => {
       {cancelable: false},
     );
   };
-
+  writeUserData = (email, fname, lname) => {
+    firebase
+      .database()
+      .ref('Users/')
+      .set({
+        email,
+        fname,
+        lname,
+      })
+      .then(data => {
+        //success callback
+        console.log('data ', data);
+      })
+      .catch(error => {
+        //error callback
+        console.log('error ', error);
+      });
+  };
   return (
     <Fragment>
       <StatusBar barStyle="dark-content" />
