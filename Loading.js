@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, ActivityIndicator, StyleSheet} from 'react-native';
 export default class Loading extends React.Component {
   render() {
+    console.log('loading page');
     return (
       <View style={styles.container}>
         <Text>Loading</Text>

@@ -25,35 +25,40 @@ import {
   createSwitchNavigator,
 } from 'react-navigation-stack';
 
-const App = () => {
-  this.state = {
-    isAuthenticated: false,
-  };
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      notiPermission: false,
+      //isAuthenticated: true,
+    };
+  }
 
-  useEffect(() => {
+  componentDidMount = () => {
     this.checkPermission();
-
     this.messageListener();
-    this.checkAuth();
-  }, []);
-
-  checkAuth = () => {
-    firebase
-      .auth()
-      .signInAnonymously()
-      .then(() => {
-        this.setState({
-          isAuthenticated: true,
-        });
-      });
+    //this.checkAuth();
   };
+
+  // checkAuth = () => {
+  //   firebase
+  //     .auth()
+  //     .signInAnonymously()
+  //     .then(() => {
+  //       this.setState({
+  //         isAuthenticated: true,
+  //       });
+  //     });
+  // };
 
   checkPermission = async () => {
     const enabled = await firebase.messaging().hasPermission();
     if (enabled) {
       this.getFcmToken();
+      console.log('You are granted allow notification');
     } else {
       this.requestPermission();
+      console.log('You are not granted allow notification');
     }
   };
 
@@ -61,7 +66,7 @@ const App = () => {
     firebase.messaging().subscribeToTopic('wttAllUser');
     const fcmToken = await firebase.messaging().getToken();
     if (fcmToken) {
-      console.log(fcmToken);
+      console.log('Your fcm Token is : ' + fcmToken);
       //this.showAlert('Your Firebase Token is:', fcmToken);
     } else {
       this.showAlert('Failed', 'No token received');
@@ -133,53 +138,17 @@ const App = () => {
         console.log('error ', error);
       });
   };
-  if (!this.state.isAuthenticated) {
-    return null;
-  }
-  return (
-    <View>
-      <Text>User</Text>
-    </View>
-  );
-};
 
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
+  render() {
+    // if (!this.state.isAuthenticated) {
+    //   return <Loading />;
+    // }
+    return (
+      <View>
+        <Text>User</Text>
+      </View>
+    );
+  }
+}
 
 export default App;
