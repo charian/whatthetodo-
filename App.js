@@ -16,7 +16,6 @@ import {
   StatusBar,
   Alert,
 } from 'react-native';
-
 import {
   Header,
   LearnMoreLinks,
@@ -24,13 +23,37 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+
+import Loading from './Loading';
+
 import firebase from 'react-native-firebase';
+import {createAppContainer} from 'react-navigation';
+import {
+  createStackNavigator,
+  createSwitchNavigator,
+} from 'react-navigation-stack';
 
 const App = () => {
+  this.state = {
+    isAuthenticated: false,
+  };
+
   useEffect(() => {
     this.checkPermission();
     this.messageListener();
+    this.checkAuth();
   }, []);
+
+  checkAuth = () => {
+    firebase
+      .auth()
+      .signInAnonymously()
+      .then(() => {
+        this.setState({
+          isAuthenticated: true,
+        });
+      });
+  };
 
   checkPermission = async () => {
     const enabled = await firebase.messaging().hasPermission();
@@ -45,7 +68,7 @@ const App = () => {
     const fcmToken = await firebase.messaging().getToken();
     if (fcmToken) {
       console.log(fcmToken);
-      this.showAlert('Your Firebase Token is:', fcmToken);
+      //this.showAlert('Your Firebase Token is:', fcmToken);
     } else {
       this.showAlert('Failed', 'No token received');
     }
@@ -117,50 +140,13 @@ const App = () => {
         console.log('error ', error);
       });
   };
+  if (!this.state.isAuthenticated) {
+    return null;
+  }
   return (
-    <Fragment>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </Fragment>
+    <View>
+      <Text>User</Text>
+    </View>
   );
 };
 
