@@ -14,6 +14,9 @@ pod 'Firebase/DynamicLinks', '~> 6.3.0'
 pod 'Fabric', '~> 1.10.2'
 pod 'Crashlytics', '~> 3.13.2'
 
+
+pod 'FBSDKCoreKit', :git => 'https://github.com/facebook/facebook-objc-sdk.git', :branch => 'master'
+
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"

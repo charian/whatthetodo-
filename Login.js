@@ -2,27 +2,70 @@
 import React from 'react';
 import {StyleSheet, Text, TextInput, View, Button} from 'react-native';
 import firebase from 'react-native-firebase';
-import {AccessToken, LoginManager} from 'react-native-fbsdk';
+import {AccessToken, LoginManager, LoginButton} from 'react-native-fbsdk';
 
 export default class Login extends React.Component {
   state = {email: '', password: '', errorMessage: null};
 
   loginWithFacebook = async () => {
-    LoginManager.logInWithPermissions(['public_profile']).then(
-      function(result) {
-        if (result.isCancelled) {
-          console.log('Login cancelled');
-        } else {
-          console.log(
-            'Login success with permissions: ' +
-              result.grantedPermissions.toString(),
-          );
-        }
-      },
-      function(error) {
-        console.log('Login fail with error: ' + error);
-      },
-    );
+    try {
+      const result = await LoginManager.logInWithPermissions([
+        'public_profile',
+        'email',
+      ]);
+
+      if (result.isCancelled) {
+        // handle this however suites the flow of your app
+        //throw new Error('User cancelled request');
+        // alert('Login was cancelled');
+        console.log('user has cancelled' + result.isCancelled);
+      } else {
+      }
+
+      // console.log(
+      //   `Login success with permissions: ${result.grantedPermissions.toString()}`,
+      // );
+
+      // get the access token
+      const data = await AccessToken.getCurrentAccessToken();
+
+      if (!data) {
+        // handle this however suites the flow of your app
+        throw new Error(
+          'Something went wrong obtaining the users access token',
+        );
+      }
+
+      // create a new firebase credential with the token
+      const credential = firebase.auth.FacebookAuthProvider.credential(
+        data.accessToken,
+      );
+
+      // login with credential
+      const firebaseUserCredential = await firebase
+        .auth()
+        .signInWithCredential(credential);
+
+      console.warn(JSON.stringify(firebaseUserCredential.user.toJSON()));
+    } catch (e) {
+      console.error(e);
+    }
+
+    // LoginManager.logInWithPermissions(['public_profile']).then(
+    //   function(result) {
+    //     if (result.isCancelled) {
+    //       console.log('Login cancelled');
+    //     } else {
+    //       console.log(
+    //         'Login success with permissions: ' +
+    //           result.grantedPermissions.toString(),
+    //       );
+    //     }
+    //   },
+    //   function(error) {
+    //     console.log('Login fail with error: ' + error);
+    //   },
+    // );
 
     // try {
     //   const result = await LoginManager.logInWithPermissions([
@@ -74,6 +117,22 @@ export default class Login extends React.Component {
         />
         <Button title="Login" onPress={this.handleLogin} />
         <Button title="Login with facebook" onPress={this.loginWithFacebook} />
+        {/* <LoginButton
+          //publishPermissions={['email']}
+          onLoginFinished={(error, result) => {
+            if (error) {
+              alert('Login failed with error: ' + error.message);
+            } else if (result.isCancelled) {
+              alert('Login was cancelled');
+            } else {
+              alert(
+                'Login was successful with permissions: ' +
+                  result.grantedPermissions,
+              );
+            }
+          }}
+          onLogoutFinished={() => alert('User logged out')}
+        /> */}
         <Button
           title="Don't have an account? Sign Up"
           onPress={() => this.props.navigation.navigate('SignUp')}

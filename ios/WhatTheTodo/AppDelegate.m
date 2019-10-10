@@ -18,6 +18,8 @@
 
 @implementation AppDelegate
 
+
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   [FIRApp configure];
@@ -44,6 +46,7 @@
 }
 
 
+
 - (BOOL)application:(UIApplication *)application 
             openURL:(NSURL *)url 
             options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
@@ -56,7 +59,6 @@
   // Add any custom logic here.
   return handled;
 }
-
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
