@@ -21,7 +21,6 @@ import SignUp from './SignUp';
 import Login from './Login';
 import Main from './Main';
 
-import firebase from 'react-native-firebase';
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import createAnimatedSwitchNavigator from 'react-navigation-animated-switch';
