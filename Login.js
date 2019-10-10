@@ -2,9 +2,42 @@
 import React from 'react';
 import {StyleSheet, Text, TextInput, View, Button} from 'react-native';
 import firebase from 'react-native-firebase';
+import {AccessToken, LoginManager} from 'react-native-fbsdk';
 
 export default class Login extends React.Component {
   state = {email: '', password: '', errorMessage: null};
+
+  loginWithFacebook = async () => {
+    LoginManager.logInWithPermissions(['public_profile']).then(
+      function(result) {
+        if (result.isCancelled) {
+          console.log('Login cancelled');
+        } else {
+          console.log(
+            'Login success with permissions: ' +
+              result.grantedPermissions.toString(),
+          );
+        }
+      },
+      function(error) {
+        console.log('Login fail with error: ' + error);
+      },
+    );
+
+    // try {
+    //   const result = await LoginManager.logInWithPermissions([
+    //     'public_profile',
+    //     'email',
+    //   ]);
+    //   console.log(result);
+    //   if (result.isCancelled) {
+    //     throw new Error('User cancelled the login process');
+    //   }
+    // } catch (err) {
+    //   console.log(err);
+    // }
+  };
+
   handleLogin = () => {
     firebase
       .auth()
@@ -16,6 +49,7 @@ export default class Login extends React.Component {
       );
     console.log('handleLogin');
   };
+
   render() {
     return (
       <View style={styles.container}>
@@ -39,6 +73,7 @@ export default class Login extends React.Component {
           value={this.state.password}
         />
         <Button title="Login" onPress={this.handleLogin} />
+        <Button title="Login with facebook" onPress={this.loginWithFacebook} />
         <Button
           title="Don't have an account? Sign Up"
           onPress={() => this.props.navigation.navigate('SignUp')}
