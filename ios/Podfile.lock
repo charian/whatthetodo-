@@ -348,6 +348,8 @@ PODS:
     - React
   - RNGestureHandler (1.4.1):
     - React
+  - RNIap (4.0.4):
+    - React
   - RNReanimated (1.3.0):
     - React
   - RNScreens (1.0.0-alpha.23):
@@ -395,6 +397,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - RNFirebase (from `../node_modules/react-native-firebase/ios`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNIap (from `../node_modules/react-native-iap`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - SajjadBlurOverlay (from `../node_modules/react-native-blur-overlay/ios`)
@@ -482,6 +485,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-firebase/ios"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNIap:
+    :path: "../node_modules/react-native-iap"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -493,7 +498,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   FBSDKCoreKit:
-    :commit: fe155d1e5686e9c91f9a76e9b5e3412677743b76
+    :commit: ef5e9563dd3157afc9e073aac85575b800e6dc1c
     :git: https://github.com/facebook/facebook-objc-sdk.git
 
 SPEC CHECKSUMS:
@@ -503,7 +508,7 @@ SPEC CHECKSUMS:
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
   FBLazyVector: 815d415da87ffb4308b229ffe4b531799d118c6c
   FBReactNativeSpec: a43dfecd1f9e31d5729a38adafba1790c4c6c950
-  FBSDKCoreKit: e7dcac0aabcfb09d0166998edd95fe3b05a0ce5d
+  FBSDKCoreKit: 366b21317757c66e37dd678870e8ead11b07f5cf
   FBSDKLoginKit: 1b0cf04df0370b37404213157b060d6666ede814
   FBSDKShareKit: abc29e1bb4f9f59f679adf1ae191006d68455f96
   Firebase: 8432d732974498afd5987e9001a05f90f1a3d625
@@ -546,6 +551,7 @@ SPEC CHECKSUMS:
   ReactCommon: 584ef683c340894c1c82be43ce760390493ae8bf
   RNFirebase: ac0de8b24c6f91ae9459575491ed6a77327619c6
   RNGestureHandler: 4cb47a93019c1a201df2644413a0a1569a51c8aa
+  RNIap: 85a4529d541960b740607ff0b45fbd30e841723d
   RNReanimated: 6abbbae2e5e72609d85aabd92a982a94566885f1
   RNScreens: f28b48b8345f2f5f39ed6195518291515032a788
   SajjadBlurOverlay: 4366a3417954b7d4a8a70682e0c43959ff76a3cb

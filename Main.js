@@ -17,6 +17,11 @@ export default class Main extends React.Component {
     this.messageListener();
   };
 
+  componentWillUnmount = () => {
+    this.notificationListener();
+    this.notificationOpenedListener();
+  };
+
   logOut = () => {
     firebase
       .auth()

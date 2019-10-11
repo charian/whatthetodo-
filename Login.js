@@ -1,12 +1,47 @@
 // Login.js
 import React from 'react';
-import {StyleSheet, Text, TextInput, View, Button} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  Button,
+  Platform,
+} from 'react-native';
 import firebase from 'react-native-firebase';
 import {AccessToken, LoginManager, LoginButton} from 'react-native-fbsdk';
+import * as RNIap from 'react-native-iap';
+
+const itemSkus = Platform.select({
+  ios: ['wtd_monthly', 'wtd_yearly'],
+  android: ['com.heebeancreative.whatthetodo'],
+});
+
+// bundle com.heebeancreative.whatthetodo
+// sku WTD
 
 export default class Login extends React.Component {
-  state = {email: '', password: '', errorMessage: null};
+  constructor(props) {
+    super(props);
 
+    this.state = {
+      email: '',
+      password: '',
+      errorMessage: null,
+      productList: [],
+      receipt: '',
+      availableItemsMessage: '',
+    };
+  }
+  componentDidMount = async () => {
+    try {
+      const products = await RNIap.getProducts(itemSkus);
+      this.setState({productList: products});
+      console.log(this.state.productList);
+    } catch (err) {
+      console.warn(err); // standardized err.code and err.message available
+    }
+  };
   loginWithFacebook = async () => {
     try {
       const result = await LoginManager.logInWithPermissions([
@@ -17,38 +52,39 @@ export default class Login extends React.Component {
       if (result.isCancelled) {
         // handle this however suites the flow of your app
         //throw new Error('User cancelled request');
-        // alert('Login was cancelled');
-        console.log('user has cancelled' + result.isCancelled);
-      } else {
-      }
-
-      // console.log(
-      //   `Login success with permissions: ${result.grantedPermissions.toString()}`,
-      // );
-
-      // get the access token
-      const data = await AccessToken.getCurrentAccessToken();
-
-      if (!data) {
-        // handle this however suites the flow of your app
-        throw new Error(
-          'Something went wrong obtaining the users access token',
+        alert('Login was cancelled');
+        //console.log('user has cancelled' + result.isCancelled);
+      } else if (result.isCancelled === false) {
+        console.log(
+          `Login success with permissions: ${result.grantedPermissions.toString()}`,
         );
+
+        // get the access token
+        const data = await AccessToken.getCurrentAccessToken();
+
+        if (!data) {
+          // handle this however suites the flow of your app
+          throw new Error(
+            'Something went wrong obtaining the users access token',
+          );
+        }
+
+        // create a new firebase credential with the token
+        const credential = firebase.auth.FacebookAuthProvider.credential(
+          data.accessToken,
+        );
+
+        // login with credential
+        const firebaseUserCredential = await firebase
+          .auth()
+          .signInWithCredential(credential);
+
+        console.warn(JSON.stringify(firebaseUserCredential.user.toJSON()));
+      } else {
+        alert('User Cancelled');
       }
-
-      // create a new firebase credential with the token
-      const credential = firebase.auth.FacebookAuthProvider.credential(
-        data.accessToken,
-      );
-
-      // login with credential
-      const firebaseUserCredential = await firebase
-        .auth()
-        .signInWithCredential(credential);
-
-      console.warn(JSON.stringify(firebaseUserCredential.user.toJSON()));
     } catch (e) {
-      console.error(e);
+      alert('ERROR' + e);
     }
 
     // LoginManager.logInWithPermissions(['public_profile']).then(
