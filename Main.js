@@ -1,6 +1,20 @@
 import React from 'react';
-import {StyleSheet, Platform, Button, Text, View} from 'react-native';
+import {
+  StyleSheet,
+  Platform,
+  Button,
+  Text,
+  View,
+  FlatList,
+  SafeAreaView,
+} from 'react-native';
 import firebase from 'react-native-firebase';
+import * as RNIap from 'react-native-iap';
+
+const itemSkus = Platform.select({
+  ios: ['wtd_monthly', 'wtd_yearly'],
+  android: ['com.heebeancreative.whatthetodo'],
+});
 
 export default class Main extends React.Component {
   constructor(props) {
@@ -8,13 +22,24 @@ export default class Main extends React.Component {
     this.state = {
       notiPermission: false,
       currentUser: null,
+      productList: [],
+      receipt: '',
+      availableItemsMessage: '',
     };
   }
-  componentDidMount = () => {
+
+  componentDidMount = async () => {
     const {currentUser} = firebase.auth();
     this.setState({currentUser});
     this.checkPermission();
     this.messageListener();
+    try {
+      const products = await RNIap.getProducts(itemSkus);
+      this.setState({productList: products});
+      console.log(this.state.productList);
+    } catch (err) {
+      console.warn(err); // standardized err.code and err.message available
+    }
   };
 
   componentWillUnmount = () => {
@@ -122,12 +147,28 @@ export default class Main extends React.Component {
   };
 
   render() {
-    const {currentUser} = this.state;
+    const {currentUser, productList} = this.state;
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <Text>Hi {currentUser && currentUser.email}!</Text>
+
         <Button title="Logout" onPress={this.logOut} />
-      </View>
+        <View style={styles.subContainer}>
+          <FlatList
+            data={productList}
+            renderItem={({item}) => (
+              <View>
+                <Text style={styles.title}>
+                  {' '}
+                  {item.title} {item.price} {item.currency}
+                </Text>
+                <Text>{item.description}</Text>
+              </View>
+            )}
+            keyExtractor={item => item.productId}
+          />
+        </View>
+      </SafeAreaView>
     );
   }
 }
@@ -136,5 +177,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  subContainer: {
+    height: 100,
   },
 });

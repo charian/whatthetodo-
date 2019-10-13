@@ -10,12 +10,6 @@ import {
 } from 'react-native';
 import firebase from 'react-native-firebase';
 import {AccessToken, LoginManager, LoginButton} from 'react-native-fbsdk';
-import * as RNIap from 'react-native-iap';
-
-const itemSkus = Platform.select({
-  ios: ['wtd_monthly', 'wtd_yearly'],
-  android: ['com.heebeancreative.whatthetodo'],
-});
 
 // bundle com.heebeancreative.whatthetodo
 // sku WTD
