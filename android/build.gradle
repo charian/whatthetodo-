@@ -6,14 +6,17 @@ buildscript {
         minSdkVersion = 16
         compileSdkVersion = 28
         targetSdkVersion = 28
+        androidXAnnotation = "1.1.0"
+    androidXBrowser = "1.0.0"
     }
     repositories {
         google()
         jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath("com.android.tools.build:gradle:3.4.2")
-        compile project(':react-native-blur-overlay')
+        classpath 'com.google.gms:google-services:4.3.2'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -33,6 +36,9 @@ allprojects {
 
         google()
         jcenter()
-        maven { url 'https://jitpack.io' }
+        maven {
+            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+            url "$rootDir/../node_modules/react-native/android"
+        }
     }
 }

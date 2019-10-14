@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "313266339250",
+    "firebase_url": "https://whatthetodo.firebaseio.com",
+    "project_id": "whatthetodo",
+    "storage_bucket": "whatthetodo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:313266339250:android:465de48c93d99ca19538ab",
+        "android_client_info": {
+          "package_name": "com.heebeancreative.whatthetodo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "313266339250-dveee948pbbvl1c1u36cbt75bd7nvg5g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwuyOUXPyxqnvV1R5JmZRgV30mhi0E7K8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "313266339250-dveee948pbbvl1c1u36cbt75bd7nvg5g.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "313266339250-rn2cpmolhuo5qj99jvmpu6v971ihpu6g.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.heebeancreative.whatthetodo"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

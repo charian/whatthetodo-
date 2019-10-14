@@ -354,8 +354,6 @@ PODS:
     - React
   - RNScreens (1.0.0-alpha.23):
     - React
-  - SajjadBlurOverlay (1.0.0):
-    - React
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -400,7 +398,6 @@ DEPENDENCIES:
   - RNIap (from `../node_modules/react-native-iap`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
-  - SajjadBlurOverlay (from `../node_modules/react-native-blur-overlay/ios`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -491,14 +488,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
-  SajjadBlurOverlay:
-    :path: "../node_modules/react-native-blur-overlay/ios"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 CHECKOUT OPTIONS:
   FBSDKCoreKit:
-    :commit: ef5e9563dd3157afc9e073aac85575b800e6dc1c
+    :commit: 6db80f07562567b1b5f0e214e4f9103ca0469c8f
     :git: https://github.com/facebook/facebook-objc-sdk.git
 
 SPEC CHECKSUMS:
@@ -554,7 +549,6 @@ SPEC CHECKSUMS:
   RNIap: 85a4529d541960b740607ff0b45fbd30e841723d
   RNReanimated: 6abbbae2e5e72609d85aabd92a982a94566885f1
   RNScreens: f28b48b8345f2f5f39ed6195518291515032a788
-  SajjadBlurOverlay: 4366a3417954b7d4a8a70682e0c43959ff76a3cb
   Yoga: 3f70bbd9aa01e04eefec36e2a085b2fc0ff1dd98
 
 PODFILE CHECKSUM: dff72e72c2e49fdabcebb52e5f98b0ad1e38a03d

@@ -1,4 +1,4 @@
-package com.whatthetodo;
+package com.heebeancreative.whatthetodo;
 
 import com.facebook.react.ReactActivity;
 
