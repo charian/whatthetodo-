@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">WhatTheTodo</string>
     <string name="facebook_app_id">767776117014104</string>
+    <string name="fb_login_protocol_scheme">fb767776117014104</string>
 </resources>

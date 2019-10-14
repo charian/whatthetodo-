@@ -13,10 +13,13 @@ import * as RNIap from 'react-native-iap';
 
 const itemSkus = Platform.select({
   ios: ['wtd_monthly', 'wtd_yearly'],
-  android: ['com.heebeancreative.whatthetodo'],
+  android: ['wtd_monthly', 'wtd_yearly'],
 });
 
 export default class Main extends React.Component {
+  purchaseUpdateSubscription = null;
+  purchaseErrorSubscription = null;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -45,6 +48,30 @@ export default class Main extends React.Component {
   componentWillUnmount = () => {
     this.notificationListener();
     this.notificationOpenedListener();
+    if (this.purchaseUpdateSubscription) {
+      this.purchaseUpdateSubscription.remove();
+      this.purchaseUpdateSubscription = null;
+    }
+    if (this.purchaseErrorSubscription) {
+      this.purchaseErrorSubscription.remove();
+      this.purchaseErrorSubscription = null;
+    }
+  };
+
+  requestPurchase = async sku => {
+    try {
+      RNIap.requestPurchase(sku);
+    } catch (err) {
+      console.warn(err.code, err.message);
+    }
+  };
+  requestSubscription = async sku => {
+    console.log(sku);
+    try {
+      RNIap.requestSubscription(sku);
+    } catch (err) {
+      Alert.alert(err.message);
+    }
   };
 
   logOut = () => {
@@ -153,6 +180,7 @@ export default class Main extends React.Component {
         <Text>Hi {currentUser && currentUser.email}!</Text>
 
         <Button title="Logout" onPress={this.logOut} />
+
         <View style={styles.subContainer}>
           <FlatList
             data={productList}
@@ -162,6 +190,10 @@ export default class Main extends React.Component {
                   {' '}
                   {item.title} {item.price} {item.currency}
                 </Text>
+                <Button
+                  title="Purchase Monthly"
+                  onPress={() => this.requestSubscription(item.productId)}
+                />
                 <Text>{item.description}</Text>
               </View>
             )}
