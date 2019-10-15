@@ -192,7 +192,7 @@ export default class Main extends React.Component {
       });
   };
 
-  oNext = (): void => {
+  goNext = (): void => {
     Alert.alert('Receipt', this.state.receipt);
   };
 
