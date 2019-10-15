@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Alert,
   StyleSheet,
   Platform,
   Button,
@@ -9,17 +10,22 @@ import {
   SafeAreaView,
 } from 'react-native';
 import firebase from 'react-native-firebase';
-import * as RNIap from 'react-native-iap';
+import RNIap, {
+  Product,
+  ProductPurchase,
+  PurchaseError,
+  acknowledgePurchaseAndroid,
+  purchaseErrorListener,
+  purchaseUpdatedListener,
+} from 'react-native-iap';
 
 const itemSkus = Platform.select({
   ios: ['wtd_monthly', 'wtd_yearly'],
   android: ['wtd_monthly', 'wtd_yearly'],
 });
-
+let purchaseUpdateSubscription;
+let purchaseErrorSubscription;
 export default class Main extends React.Component {
-  purchaseUpdateSubscription = null;
-  purchaseErrorSubscription = null;
-
   constructor(props) {
     super(props);
     this.state = {
@@ -31,7 +37,7 @@ export default class Main extends React.Component {
     };
   }
 
-  componentDidMount = async () => {
+  componentDidMount = async (): void => {
     const {currentUser} = firebase.auth();
     this.setState({currentUser});
     this.checkPermission();
@@ -43,6 +49,35 @@ export default class Main extends React.Component {
     } catch (err) {
       console.warn(err); // standardized err.code and err.message available
     }
+
+    purchaseUpdateSubscription = purchaseUpdatedListener(
+      async (purchase: ProductPurchase) => {
+        console.log('purchaseUpdatedListener', purchase);
+        if (
+          purchase.purchaseStateAndroid === 1 &&
+          !purchase.isAcknowledgedAndroid
+        ) {
+          try {
+            const ackResult = await acknowledgePurchaseAndroid(
+              purchase.purchaseToken,
+            );
+            console.log('ackResult', ackResult);
+          } catch (ackErr) {
+            console.warn('ackErr', ackErr);
+          }
+        }
+        this.setState({receipt: purchase.transactionReceipt}, () =>
+          this.goNext(),
+        );
+      },
+    );
+
+    purchaseErrorSubscription = purchaseErrorListener(
+      (error: PurchaseError) => {
+        console.log('purchaseErrorListener', error);
+        Alert.alert('purchase error', JSON.stringify(error));
+      },
+    );
   };
 
   componentWillUnmount = () => {
@@ -55,22 +90,6 @@ export default class Main extends React.Component {
     if (this.purchaseErrorSubscription) {
       this.purchaseErrorSubscription.remove();
       this.purchaseErrorSubscription = null;
-    }
-  };
-
-  requestPurchase = async sku => {
-    try {
-      RNIap.requestPurchase(sku);
-    } catch (err) {
-      console.warn(err.code, err.message);
-    }
-  };
-  requestSubscription = async sku => {
-    console.log(sku);
-    try {
-      RNIap.requestSubscription(sku);
-    } catch (err) {
-      Alert.alert(err.message);
     }
   };
 
@@ -173,6 +192,67 @@ export default class Main extends React.Component {
       });
   };
 
+  oNext = (): void => {
+    Alert.alert('Receipt', this.state.receipt);
+  };
+
+  getItems = async (): void => {
+    try {
+      const products = await RNIap.getProducts(itemSkus);
+      // const products = await RNIap.getSubscriptions(itemSkus);
+      console.log('Products', products);
+      this.setState({productList: products});
+    } catch (err) {
+      console.warn(err.code, err.message);
+    }
+  };
+
+  getSubscriptions = async (): void => {
+    try {
+      const products = await RNIap.getSubscriptions(itemSubs);
+      console.log('Products', products);
+      this.setState({productList: products});
+    } catch (err) {
+      console.warn(err.code, err.message);
+    }
+  };
+
+  getAvailablePurchases = async (): void => {
+    try {
+      console.info(
+        'Get available purchases (non-consumable or unconsumed consumable)',
+      );
+      const purchases = await RNIap.getAvailablePurchases();
+      console.info('Available purchases :: ', purchases);
+      if (purchases && purchases.length > 0) {
+        this.setState({
+          availableItemsMessage: `Got ${purchases.length} items.`,
+          receipt: purchases[0].transactionReceipt,
+        });
+      }
+    } catch (err) {
+      console.warn(err.code, err.message);
+      Alert.alert(err.message);
+    }
+  };
+
+  // Version 3 apis
+  requestPurchase = async (sku): void => {
+    try {
+      RNIap.requestPurchase(sku);
+    } catch (err) {
+      console.warn(err.code, err.message);
+    }
+  };
+
+  requestSubscription = async (sku): void => {
+    try {
+      RNIap.requestSubscription(sku);
+    } catch (err) {
+      Alert.alert(err.message);
+    }
+  };
+
   render() {
     const {currentUser, productList} = this.state;
     return (
@@ -192,7 +272,7 @@ export default class Main extends React.Component {
                 </Text>
                 <Button
                   title="Purchase Monthly"
-                  onPress={() => this.requestSubscription(item.productId)}
+                  onPress={(): void => this.requestSubscription(item.productId)}
                 />
                 <Text>{item.description}</Text>
               </View>

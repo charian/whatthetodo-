@@ -12,6 +12,7 @@
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		19949FCB23558973008A1851 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19949FCA23558973008A1851 /* StoreKit.framework */; };
 		19AC40812344CD2700ECD399 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19AC40802344CD2700ECD399 /* UserNotifications.framework */; };
 		19AC40822344CD3B00ECD399 /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19AC407F2344CCF100ECD399 /* libRNFirebase.a */; };
 		19D8037E233DEC3F005E9C16 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 19D8037D233DEC3E005E9C16 /* GoogleService-Info.plist */; };
@@ -64,6 +65,7 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = WhatTheTodo/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = WhatTheTodo/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = WhatTheTodo/main.m; sourceTree = "<group>"; };
+		19949FCA23558973008A1851 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		1997C8BA2342FB6F00D52EF5 /* WhatTheTodo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = WhatTheTodo.entitlements; path = WhatTheTodo/WhatTheTodo.entitlements; sourceTree = "<group>"; };
 		19AC407A2344CCF100ECD399 /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFirebase.xcodeproj; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; };
 		19AC40802344CD2700ECD399 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
@@ -99,6 +101,7 @@
 				19AC40822344CD3B00ECD399 /* libRNFirebase.a in Frameworks */,
 				19AC40812344CD2700ECD399 /* UserNotifications.framework in Frameworks */,
 				43A901DC166BB6CA6BAD9164 /* libPods-WhatTheTodo.a in Frameworks */,
+				19949FCB23558973008A1851 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -165,6 +168,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				19949FCA23558973008A1851 /* StoreKit.framework */,
 				19AC40802344CD2700ECD399 /* UserNotifications.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
