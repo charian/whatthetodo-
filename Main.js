@@ -38,10 +38,6 @@ export default class Main extends React.Component {
   }
 
   componentDidMount = async (): void => {
-    const {currentUser} = firebase.auth();
-    this.setState({currentUser});
-    this.checkPermission();
-    this.messageListener();
     try {
       const products = await RNIap.getProducts(itemSkus);
       this.setState({productList: products});
@@ -49,6 +45,10 @@ export default class Main extends React.Component {
     } catch (err) {
       console.warn(err); // standardized err.code and err.message available
     }
+    const {currentUser} = firebase.auth();
+    this.setState({currentUser});
+    this.checkPermission();
+    this.messageListener();
 
     purchaseUpdateSubscription = purchaseUpdatedListener(
       async (purchase: ProductPurchase) => {
